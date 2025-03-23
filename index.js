@@ -3,6 +3,7 @@ import 'dotenv/config'
 import mongoose from 'mongoose';
 import cors from "cors"
 import adRouter from './routes/user.js';
+import authRouter from './routes/auth.js';
 
 
 
@@ -27,6 +28,7 @@ app.use(cors())
 app.use(express.json());
 
 app.use(adRouter);
+app.use(authRouter)
 
  
 
