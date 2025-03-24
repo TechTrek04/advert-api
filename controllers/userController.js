@@ -17,7 +17,11 @@ export const createAd = async (req, res, next) => {
 
 export const getAllAds = async (req, res) => {
   try {
-    const getads = await adModel.find();
+    const { filter = "{}", sort = "{}" } = req.query;
+    //fetch produtcs from database
+    const result = await adModel.find(JSON.parse(filter), JSON.parse(sort)
+  );
+   //Return response
     res.status(201).json(getads);
   } catch (error) {
     next(error);
