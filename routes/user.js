@@ -4,6 +4,7 @@ import {
   deleteAd,
   getAdById,
   getAllAds,
+  searchAds,
   replaceAd,
   updateAd,
 } from "../controllers/userController.js";
@@ -18,6 +19,8 @@ const adRouter = Router();
 
 //Defining Route
 adRouter.get("/ad", getAllAds);
+
+adRouter.get('/ad/search', searchAds)
 
 adRouter.get("/ad/:id", getAdById);
 
@@ -44,6 +47,7 @@ adRouter.patch(
 );
 
 adRouter.delete("/ad/:id", isAuthenticated, deleteAd);
+
 
 //exporting Router
 

@@ -1,6 +1,47 @@
 import { adModel } from "../models/userModel.js";
 import { createAdValidator, replaceAdValidator, updateAdValidator } from "../validators/userValidator.js";
 
+
+// Add to your existing controller exports
+export const searchAds = async (req, res, next) => {
+  try {
+    // 1. Parse query parameters
+    const { 
+      title = '',
+      category = '',
+      minPrice = 0,
+      maxPrice = 1000000 // Practical upper limit
+    } = req.query;
+
+    // 2. Build the MongoDB query
+    const query = {
+      ...(title && { title: { $regex: title, $options: 'i' } }), // Case-insensitive title search
+      ...(category && { category }), // Exact category match
+      price: {
+        $gte: Number(minPrice),
+        $lte: Number(maxPrice) || 1000000 // Fallback for missing maxPrice
+      }
+    };
+
+    // 3. Execute the query with default sorting (newest first)
+    const ads = await adModel.find(query)
+      .sort({ createdAt: -1 })
+      .lean(); // Better performance
+
+    // 4. Send standardized response
+    res.status(200).json({
+      success: true,
+      count: ads.length,
+      data: ads
+    });
+
+  } catch (error) {
+    // 5. Consistent error handling
+    next(error);
+  }
+};
+
+
 export const createAd = async (req, res, next) => {
   try {
     const { error, value } = createAdValidator.validate({...req.body,
