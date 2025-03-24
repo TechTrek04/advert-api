@@ -1,6 +1,7 @@
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
+import { multerSaveFilesOrg } from "multer-savefilesorg";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -8,11 +9,11 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export const profilePicture = multer({
+export const productPicturesUpload = multer({
   storage: new CloudinaryStorage({
     cloudinary,
     params: {
-      folder: "/advert-api/profile-pictures"
+      folder: "/advert-api/product-pictures"
     },
   }),
 });

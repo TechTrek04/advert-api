@@ -3,7 +3,11 @@ import { createAdValidator, replaceAdValidator, updateAdValidator } from "../val
 
 export const createAd = async (req, res, next) => {
   try {
-    const { error, value } = createAdValidator.validate(req.body);
+    const { error, value } = createAdValidator.validate({...req.body,
+      pictures: req.files?.map((file) => {
+        return file.filename;
+      }),
+    });
     if (error) {
       return res.status(422).json(error);
     }
@@ -24,10 +28,24 @@ export const getAllAds = async (req, res) => {
   }
 };
 
+export const getAdById = async (req, res) => {
+  try {
+    const getAdById = await adModel.findById(req.params.id).exec();
+    if (!getAdById) return res.status(404).json({ message: "Ad not found" });
+    res.status(200).json(getAdById);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export const updateAd = async (req, res, next) => {
     try {
       // Validate request body
-      const { error, value } = updateAdValidator.validate(req.body);
+      const { error, value } = updateAdValidator.validate({...req.body,
+        pictures: req.files?.map((file) => {
+          return file.filename;
+        }),
+      });
       if (error) {
         return res.status(422).json({ message: error.details[0].message });
       }
@@ -54,7 +72,11 @@ export const updateAd = async (req, res, next) => {
 export const replaceAd = async (req, res, next) => {
     try {
       // Validate incoming request
-      const { error, value } = replaceAdValidator.validate(req.body);
+      const { error, value } = replaceAdValidator.validate({...req.body, 
+        pictures: req.files?.map((file) => {
+          return file.filename;
+        }),
+      });
       if (error) {
         return res.status(422).json({ message: error.details[0].message });
       }

@@ -3,7 +3,7 @@ import Joi from "joi";
 export const createAdValidator = Joi.object({
     title: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required(),
+    pictures: Joi.array().items(Joi.string().required()),
     price: Joi.number().required(),
     category: Joi.string().valid("Audios",
         "Cameras",
@@ -20,7 +20,7 @@ export const createAdValidator = Joi.object({
   export const updateAdValidator = Joi.object({
     title: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required(),
+    pictures: Joi.string().required(),
     price: Joi.number().required(),
     category: Joi.string().valid("Audios",
         "Cameras",
@@ -37,7 +37,7 @@ export const createAdValidator = Joi.object({
   export const replaceAdValidator = Joi.object({
     title: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required(),
+    pictures: Joi.array().items(Joi.string().required()),
     price: Joi.number().required(),
     category: Joi.string().valid("Audios",
         "Cameras",
