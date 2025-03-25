@@ -200,7 +200,12 @@ export const loginUser = async (req, res) => {
       process.env.JWT_SECRET_KEY,
       { expiresIn: '24h' });
 
-    res.status(200).json({ token });
+    res.status(200).json({ token,
+      user: {
+        role: user.role,
+        email: user.email,
+      }
+     });
   } catch (error) {
     res.status(500).json({message: "Error logging in"});
   }

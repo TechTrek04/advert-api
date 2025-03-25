@@ -62,12 +62,10 @@ export const createAd = async (req, res, next) => {
 
 export const getAllAds = async (req, res) => {
   try {
-    const getads = await adModel.find(JSON.parse(filter))
-    .sort(JSON.parse(sort));
-    
-    res.status(201).json(getads);
+   const getAds = await adModel.find();
+   res.status(201).json(getAds);
   } catch (error) {
-    next(error);
+   next(error);
   }
 };
 
