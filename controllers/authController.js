@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { loginUserValidator, registerUserValidator } from '../validators/authValidator.js';
 import { UserModel } from '../models/authModel.js';
 import { sendEmail } from '../utils/mailing.js';
+import { profilePicture } from '../middlewares/profile_upload.js';
 
 //registering a new user
 export const registerUser = async (req, res) => {
@@ -58,7 +59,7 @@ export const registerUser = async (req, res) => {
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to AdsTrek!</title>
+    <title>Welcome to EASYBUY!</title>
    <style>
       body {
         font-family: Arial, sans-serif;
@@ -118,14 +119,14 @@ export const registerUser = async (req, res) => {
 
     <div class="container">
       <div class="header">
-        Welcome to AdsTrek!
+        Welcome to EASYBUY!
       </div>
       
       <div class="content">
         <h2>Hi ${incomingUser.firstName},</h2>
         <p>We're thrilled to have you on board! 🎉</p>
 
-        <p><strong>AdsTrek</strong> is the best place to <strong>buy, sell, and discover amazing deals<strong> near you. Get ready to connect with thousands of users and find everything you need in one place!</p>
+        <p><strong>EASYBUY</strong> is the best place to <strong>buy, sell, and discover amazing deals<strong> near you. Get ready to connect with thousands of users and find everything you need in one place!</p>
 
         <h3>🚀 Get Started in 3 Easy Steps:</h3>
         <ol>
@@ -154,8 +155,8 @@ export const registerUser = async (req, res) => {
       </div>
 
       <div class="footer">
-        <p>Need help? Our support team is available 24/7. <a href="mailto:support@your-platform.com">Contact Us</a></p>
-        <p>&copy; 2025 AdsTrek. All rights reserved.</p>
+        <p>Need help? Our support team is available 24/7. <a href="mailto:techtrekgh04@gmail.com">Contact Us</a></p>
+        <p>&copy; 2025 EASYBUY. All rights reserved.</p>
       </div>
     </div>
 
@@ -204,9 +205,30 @@ export const loginUser = async (req, res) => {
       user: {
         role: user.role,
         email: user.email,
+        id: user.id
       }
      });
   } catch (error) {
     res.status(500).json({message: "Error logging in"});
   }
 }
+
+export const getUserById = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.params.id).exec();
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.status(200).json({
+      user: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phoneNumber: user.phoneNumber,
+        profilePicture: user.profilePicture,
+        role: user.role,
+        email: user.email,
+        id: user.id
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

@@ -4,9 +4,14 @@ import normalize from "normalize-mongoose";
 const adSchema = new Schema(
   {
     title: { type: String, required: true, unique: true },
-    description: { type: String, required: true },
+    shortDescription: { type: String, required: true },
+    detailedDescription: { type: String, required: true },
     pictures: { type: [String], required: true },
     price: { type: Number, required: true },
+    priceTerm: {
+      type: String,
+      enum: ["Negotiable", "Not Negotiable"],
+    },
     category: {
       type: String,
       enum: [
@@ -19,7 +24,7 @@ const adSchema = new Schema(
         "Mobiles",
         "Robots",
         "Sport",
-        "Televisions"
+        "Televisions",
       ],
     },
   },

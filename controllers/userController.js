@@ -63,7 +63,7 @@ export const createAd = async (req, res, next) => {
 export const getAllAds = async (req, res) => {
   try {
    const getAds = await adModel.find();
-   res.status(201).json(getAds);
+   res.status(200).json(getAds);
   } catch (error) {
    next(error);
   }

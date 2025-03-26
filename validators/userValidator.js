@@ -1,27 +1,35 @@
 import Joi from "joi";
 
 export const createAdValidator = Joi.object({
-    title: Joi.string().required(),
-    description: Joi.string().required(),
-    pictures: Joi.array().items(Joi.string().required()),
-    price: Joi.number().required(),
-    category: Joi.string().valid("Audios",
-        "Cameras",
-        "Computers",
-        "Gaming",
-        "Kitchen",
-        "Office",
-        "Mobiles",
-        "Robots",
-        "Sport",
-        "Televisions").required()
-  });
+  title: Joi.string().required(),
+  shortDescription: Joi.string().required(),
+  detailedDescription: Joi.string().required(),
+  pictures: Joi.array().items(Joi.string().required()),
+  price: Joi.number().required(),
+  priceTerm: Joi.string().valid("Negotiable",
+      "Not Negotiable",
+     ).required(),
+  category: Joi.string().valid("Audios",
+      "Cameras",
+      "Computers",
+      "Gaming",
+      "Kitchen",
+      "Office",
+      "Mobiles",
+      "Robots",
+      "Sport",
+      "Televisions").required()
+});
 
   export const updateAdValidator = Joi.object({
     title: Joi.string().required(),
-    description: Joi.string().required(),
+    shortDescription: Joi.string().required(),
+    detailedDescription: Joi.string().required(),
     pictures: Joi.array().items(Joi.string().required()),
     price: Joi.number().required(),
+    priceTerm: Joi.string().valid("Negotiable",
+        "Not Negotiable",
+       ).required(),
     category: Joi.string().valid("Audios",
         "Cameras",
         "Computers",
@@ -36,9 +44,13 @@ export const createAdValidator = Joi.object({
 
   export const replaceAdValidator = Joi.object({
     title: Joi.string().required(),
-    description: Joi.string().required(),
+    shortDescription: Joi.string().required(),
+    detailedDescription: Joi.string().required(),
     pictures: Joi.array().items(Joi.string().required()),
     price: Joi.number().required(),
+    priceTerm: Joi.string().valid("Negotiable",
+        "Not Negotiable",
+       ).required(),
     category: Joi.string().valid("Audios",
         "Cameras",
         "Computers",
