@@ -50,122 +50,96 @@ export const registerUser = async (req, res) => {
 
     //email sending
     try {
-      await sendEmail(
-        incomingUser.email,
-        "Welcome to AdsTrek",
-
-        ` <!DOCTYPE html>
-  <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to EASYBUY!</title>
-   <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-     }
-      .container {
-        max-width: 600px;
-        background-color: #ffffff;
-        margin: 20px auto;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      let emailSubject = "Welcome to EASYBUY";
+      let emailBody = "";
+  
+      if (incomingUser.role === "vendor") {
+          emailBody = `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Welcome to EASYBUY, Vendor!</title>
+            <style>
+              body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+              .container { max-width: 600px; background-color: #ffffff; margin: 20px auto; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); }
+              .header { background-color: #0073e6; color: white; padding: 15px; text-align: center; font-size: 24px; border-radius: 8px 8px 0 0; }
+              .content { padding: 20px; color: #333; line-height: 1.6; }
+              .button { display: inline-block; background-color: #0073e6; color: white; text-decoration: none; padding: 10px 15px; border-radius: 5px; margin-top: 10px; }
+              .footer { text-align: center; padding: 15px; font-size: 14px; color: #777; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <div class="header">Welcome to EASYBUY, ${incomingUser.firstName}!</div>
+              <div class="content">
+                <h2>Hi ${incomingUser.firstName},</h2>
+                <p>We're excited to have you as a vendor on EASYBUY! 🚀</p>
+                <p>Start posting your ads and connect with thousands of buyers looking for amazing deals.</p>
+                <h3>🛍️ Next Steps:</h3>
+                <ul>
+                  <li><strong>Complete Your Vendor Profile</strong> – Build trust with buyers.</li>
+                  <li><strong>Post Your First Ad</strong> – Start showcasing your products.</li>
+                  <li><strong>Engage with Customers</strong> – Sell and grow your business.</li>
+                </ul>
+                <a href="https://your-platform-link.com/vendor-dashboard" class="button">Go to Dashboard</a>
+              </div>
+              <div class="footer">
+                <p>Need help? Our support team is available 24/7. <a href="mailto:techtrekgh04@gmail.com">Contact Us</a></p>
+                <p>&copy; 2025 EASYBUY. All rights reserved.</p>
+              </div>
+            </div>
+          </body>
+          </html>
+          `;
+      } else {
+          emailBody = `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Welcome to EASYBUY, User!</title>
+            <style>
+              body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+              .container { max-width: 600px; background-color: #ffffff; margin: 20px auto; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); }
+              .header { background-color: #0073e6; color: white; padding: 15px; text-align: center; font-size: 24px; border-radius: 8px 8px 0 0; }
+              .content { padding: 20px; color: #333; line-height: 1.6; }
+              .button { display: inline-block; background-color: #0073e6; color: white; text-decoration: none; padding: 10px 15px; border-radius: 5px; margin-top: 10px; }
+              .footer { text-align: center; padding: 15px; font-size: 14px; color: #777; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <div class="header">Welcome to EASYBUY, ${incomingUser.firstName}!</div>
+              <div class="content">
+                <h2>Hi ${incomingUser.firstName},</h2>
+                <p>We're thrilled to have you on board! 🎉</p>
+                <p>Find amazing deals, connect with sellers, and enjoy a seamless shopping experience.</p>
+                <h3>🚀 Get Started:</h3>
+                <ul>
+                  <li><strong>Complete Your Profile</strong> – Personalize your experience.</li>
+                  <li><strong>Browse Great Deals</strong> – Find products, services, and opportunities.</li>
+                  <li><strong>Stay Updated</strong> – Get notified about the best offers.</li>
+                </ul>
+                <a href="https://your-platform-link.com/profile" class="button">Explore EASYBUY</a>
+              </div>
+              <div class="footer">
+                <p>Need help? Our support team is available 24/7. <a href="mailto:techtrekgh04@gmail.com">Contact Us</a></p>
+                <p>&copy; 2025 EASYBUY. All rights reserved.</p>
+              </div>
+            </div>
+          </body>
+          </html>
+          `;
       }
-      .header {
-       background-color: #0073e6;
-       color: white;
-       padding: 15px;
-       text-align: center;
-       font-size: 24px;
-       border-radius: 8px 8px 0 0;
-      }
-      .content {
-        padding: 20px;
-        color: #333;
-        line-height: 1.6;
-     }
-      .button {
-        display: inline-block;
-        background-color: #0073e6;
-        color: white;
-        text-decoration: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        margin-top: 10px;
-      }
-      .footer {
-        text-align: center;
-        padding: 15px;
-        font-size: 14px;
-        color: #777;
-      }
-      .featured {
-        background-color: #f8f8f8;
-        padding: 15px;
-        margin-top: 20px;
-        border-radius: 8px;
-      }
-      .featured img {
-        width: 100%;
-        border-radius: 8px;
-      }
-    </style>
-  </head>
-  <body>
-
-    <div class="container">
-      <div class="header">
-        Welcome to EASYBUY!
-      </div>
-      
-      <div class="content">
-        <h2>Hi ${incomingUser.firstName},</h2>
-        <p>We're thrilled to have you on board! 🎉</p>
-
-        <p><strong>EASYBUY</strong> is the best place to <strong>buy, sell, and discover amazing deals<strong> near you. Get ready to connect with thousands of users and find everything you need in one place!</p>
-
-        <h3>🚀 Get Started in 3 Easy Steps:</h3>
-        <ol>
-          <li><strong>Complete Your Profile</strong> – Add a profile picture and update your details.</li>
-          <li><strong>Post Your First Ad</strong> – It's quick, free, and reaches a huge audience.</li>
-          <li><strong>Browse Great Deals</strong> – Find products, services, and opportunities.</li>
-        </ol>
-
-        <a href="https://your-platform-link.com/profile" class="button">Complete Your Profile</a>
-
-        <div class="featured">
-          <h3>🔥 Featured Listings</h3>
-          <img src="https://your-image-link.com/sample-ad.jpg" alt="Featured Ad">
-          <p>Discover top deals in your area. Don't miss out!</p>
-          <a href="https://your-platform-link.com/featured" class="button">View Listings</a>
-        </div>
-
-        <h3>📱 Get the App</h3>
-        <p>For the best experience, download our mobile app and get real-time updates on your ads and messages.</p>
-        <a href="https://your-app-link.com" class="button">Download Now</a>
-
-        <h3>🎁 Invite & Earn</h3>
-        <p>Refer friends and earn rewards! Share your referral link and get exclusive bonuses.</p>
-        <a href="https://your-platform-link.com/referral" class="button">Invite Friends</a>
-
-      </div>
-
-      <div class="footer">
-        <p>Need help? Our support team is available 24/7. <a href="mailto:techtrekgh04@gmail.com">Contact Us</a></p>
-        <p>&copy; 2025 EASYBUY. All rights reserved.</p>
-      </div>
-    </div>
-
-  </body>
-  </html>
-  `);
-    } catch (error) {
+  
+      await sendEmail(incomingUser.email, emailSubject, emailBody);
+  } catch (error) {
       console.error('Error sending email:', error.message);
-    }
+  }
+  
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

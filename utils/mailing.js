@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
 export const sendEmail = async (to, subject, html) => {
   try {
     const send = await transporter.sendMail({
-      from: process.env.HOST_EMAIL,
+      from: `"EasyBuy" <${process.env.HOST_EMAIL}>`,
       to: to,
       subject: subject,
       html: html
