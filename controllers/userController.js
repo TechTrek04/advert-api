@@ -107,6 +107,7 @@ export const updateAd = async (req, res, next) => {
       if (error) {
         return res.status(422).json({ message: error.details[0].message });
       }
+      console.log(error)
   
       // Update the ad
       const result = await adModel.findByIdAndUpdate(req.params.id, value, {

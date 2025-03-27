@@ -24,6 +24,7 @@ adRouter.get("/ad", getAllAds);
 adRouter.get('/ad/search', searchAds)
 
 adRouter.get("/ad/vendor", isAuthenticated, getVendorAds)
+
 adRouter.get("/ad/:id", getAdById);
 
 adRouter.post(
@@ -34,6 +35,13 @@ adRouter.post(
   createAd
 );
 
+adRouter.patch(
+  "/ad/:id",
+  isAuthenticated,
+  productPicturesUpload.array("pictures", 3),
+  updateAd
+);
+
 adRouter.put(
   "/ad/:id",
   isAuthenticated,
@@ -41,12 +49,6 @@ adRouter.put(
   replaceAd
 );
 
-adRouter.patch(
-  "/ad/:id",
-  isAuthenticated,
-  productPicturesUpload.array("pictures", 3),
-  updateAd
-);
 
 
 adRouter.delete("/ad/:id", isAuthenticated, deleteAd);
