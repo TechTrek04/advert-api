@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUserById, loginUser, registerUser } from "../controllers/authController.js";
+import { getAuthenticatedUser, loginUser, registerUser } from "../controllers/authController.js";
 import { isAuthenticated } from "../middlewares/authMiddleware.js";
 import { profilePicture } from "../middlewares/profile_upload.js";
 import { updateProfile } from "../controllers/updateProfile.js";
@@ -14,7 +14,7 @@ authRouter.post('/login', loginUser);
 
 authRouter.patch("/update/profile", isAuthenticated, profilePicture.single("profilePicture"), updateProfile);
 
-authRouter.get("/user/:id", getUserById);
+authRouter.get("/users/me", isAuthenticated, getAuthenticatedUser);
 
 
 export default authRouter

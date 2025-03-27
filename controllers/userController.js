@@ -53,7 +53,9 @@ export const createAd = async (req, res, next) => {
       return res.status(422).json(error);
     }
 
-    const result = await adModel.create(value);
+    const result = await adModel.create({...value,
+      userId: req.auth.id,
+    });
     res.status(201).json(result);
   } catch (error) {
     next(error);
@@ -78,6 +80,21 @@ export const getAdById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getVendorAds = async (req, res) => {
+  try {
+    const userId = req.auth.id
+    const ads = await adModel.find({userId}).exec();
+    if (!ads) return res.status(404).json({ message: "Vendor not found!" });
+    res.status(200).json(ads);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+
+  }
+};
+
+
+
 
 export const updateAd = async (req, res, next) => {
     try {

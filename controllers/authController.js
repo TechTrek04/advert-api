@@ -213,22 +213,24 @@ export const loginUser = async (req, res) => {
   }
 }
 
-export const getUserById = async (req, res) => {
+export const getAuthenticatedUser = async (req, res, next) => {
   try {
-    const user = await UserModel.findById(req.params.id).exec();
-    if (!user) return res.status(404).json({ message: "User not found" });
-    res.status(200).json({
-      user: {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        phoneNumber: user.phoneNumber,
-        profilePicture: user.profilePicture,
-        role: user.role,
-        email: user.email,
-        id: user.id
-      }
-    });
+    const userId = req.auth?.id; 
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized: No user ID found" });
+    }
+
+    const user = await UserModel.findById(userId).select("-password"); 
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
   } catch (error) {
+    console.error("Error fetching user:", error); 
     res.status(500).json({ error: error.message });
   }
 };
+
