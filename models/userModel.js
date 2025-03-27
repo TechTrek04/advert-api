@@ -26,7 +26,7 @@ const adSchema = new Schema(
         "Televisions",
       ],
     },
-    contact: { type: Number, required: true },
+    contact: { type: String, required: true },
     pictures: { type: [String], required: true },
    
     
